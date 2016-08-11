@@ -25,7 +25,22 @@ def home():
 
 @app.route('/', methods=['POST'])
 def login():
-    g.session.add(User(email=request.form['email'], password=request.form['password']))
+    users = g.session.query(User).filter(User.email==request.form['email'], User.password==request.form['password']).count()
+    if users:
+        return redirect('/success')
+    return redirect('/')
+
+@app.route('/success', methods=['GET'])
+def success():
+    return 'you successfully logged in'
+
+@app.route('/signup', methods=['GET'])
+def signup():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST'])
+def make_account():
+    g.session.add(User(name=request.form['name'], email=request.form['email'], password=request.form['password']))
     return redirect('/')
 
 @app.route('/users')

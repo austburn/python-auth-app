@@ -1,5 +1,9 @@
 <title>Login</title>
-<form action="/" method="post">
+<form action="/signup" method="post">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" name="name">
+    </div>
     <div>
         <label for="email">Email:</label>
         <input type="email" name="email">
@@ -13,6 +17,4 @@
     <div class="button">
         <button type="submit">Login</button>
     </div>
-
-    <p>Don't have an account? Signup <a href="/signup">here</a>!</p>
 </form>
