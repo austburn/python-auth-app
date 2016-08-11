@@ -19,5 +19,5 @@ if [ "$db_running" -eq 0 ]; then
 fi
 
 if [ "$app_running" -eq 0 ]; then
-    docker run -it --name python-auth-app --link python-auth-db:postgres python-auth-app
+    docker run -it --name python-auth-app --volume $(pwd)/app:/app --link python-auth-db:postgres --publish 5000:5000 python-auth-app
 fi

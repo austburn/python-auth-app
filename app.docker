@@ -1,7 +1,7 @@
 FROM alpine
 RUN apk update && apk add python py-pip py-psycopg2
-ADD app /app
-WORKDIR /app
-RUN pip install -r requirements
+ADD requirements /requirements
+RUN pip install -r /requirements
 ENV PYTHONPATH "/"
+WORKDIR /app
 CMD python app.py
