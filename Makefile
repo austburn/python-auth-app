@@ -1,7 +1,7 @@
-default: build run
+default: build launch
 
 build:
 	docker build -f ./app.docker --tag python-auth-app .
 
-run:
-	docker run -it python-auth-app
+launch:
+	./launch.sh

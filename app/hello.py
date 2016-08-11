@@ -1,3 +1,5 @@
-from app.mod import test_imports
+from sqlalchemy import create_engine
 
-print 'Hello from %s' % test_imports
+engine = create_engine('postgresql://austburn:pass1234@postgres')
+
+print engine.name
