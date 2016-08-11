@@ -1,0 +1,7 @@
+FROM alpine
+RUN apk update && apk add python py-pip
+ADD app /app
+WORKDIR /app
+RUN pip install -r requirements
+ENV PYTHONPATH "/"
+CMD python hello.py
