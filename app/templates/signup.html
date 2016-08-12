@@ -14,7 +14,13 @@
         <input type="password" name="password">
     </div>
 
+    {% if errors %}
+    {% for e in errors %}
+    <div style="color:red">{{ e }}</div>
+    {% endfor %}
+    {% endif %}
+
     <div class="button">
-        <button type="submit">Login</button>
+        <button type="submit">Signup</button>
     </div>
 </form>

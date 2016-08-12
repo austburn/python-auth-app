@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
 from schemas import Base, User
+import bcrypt
 from flask import Flask, render_template, request, redirect, g
 
 engine = create_engine('postgresql://austburn:pass1234@postgres', echo=True)
@@ -15,7 +17,6 @@ def initialize_session():
 
 @app.after_request
 def setup_db(res):
-    g.session.commit()
     g.session.close()
     return res
 
@@ -25,8 +26,8 @@ def home():
 
 @app.route('/', methods=['POST'])
 def login():
-    users = g.session.query(User).filter(User.email==request.form['email'], User.password==request.form['password']).count()
-    if users:
+    user = g.session.query(User).filter(User.email==request.form['email']).one()
+    if bcrypt.checkpw(bytes(request.form['password']), bytes(user.password)):
         return redirect('/success')
     return redirect('/')
 
@@ -40,7 +41,12 @@ def signup():
 
 @app.route('/signup', methods=['POST'])
 def make_account():
-    g.session.add(User(name=request.form['name'], email=request.form['email'], password=request.form['password']))
+    hashed_pwd = bcrypt.hashpw(bytes(request.form['password']), bcrypt.gensalt())
+    g.session.add(User(name=request.form['name'], email=request.form['email'], password=hashed_pwd))
+    try:
+        g.session.commit()
+    except IntegrityError:
+        return render_template('signup.html', errors=['Looks like that email is taken.'])
     return redirect('/')
 
 @app.route('/users')

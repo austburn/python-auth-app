@@ -1,5 +1,5 @@
 FROM alpine
-RUN apk update && apk add python py-pip py-psycopg2
+RUN apk update && apk add python python-dev py-pip py-psycopg2 gcc libffi-dev musl-dev
 ADD requirements /requirements
 RUN pip install -r /requirements
 ENV PYTHONPATH "/"
