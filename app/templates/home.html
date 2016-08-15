@@ -13,6 +13,7 @@
     <div class="button">
         <button type="submit">Login</button>
     </div>
-
+    {% from "errors.html" import error_list %}
+    {{ error_list(errors=errors) }}
     <p>Don't have an account? Signup <a href="/signup">here</a>!</p>
 </form>

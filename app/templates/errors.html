@@ -1,0 +1,7 @@
+{% macro error_list(errors=None) -%}
+    {% if errors %}
+    {% for e in errors %}
+    <div style="color:red">{{ e }}</div>
+    {% endfor %}
+    {% endif %}
+{%- endmacro %}

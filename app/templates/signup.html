@@ -1,4 +1,4 @@
-<title>Login</title>
+<title>Signup</title>
 <form action="/signup" method="post">
     <div>
         <label for="name">Name:</label>
@@ -13,13 +13,8 @@
         <label for="password">Password:</label>
         <input type="password" name="password">
     </div>
-
-    {% if errors %}
-    {% for e in errors %}
-    <div style="color:red">{{ e }}</div>
-    {% endfor %}
-    {% endif %}
-
+    {% from "errors.html" import error_list %}
+    {{ error_list(errors=errors) }}
     <div class="button">
         <button type="submit">Signup</button>
     </div>
