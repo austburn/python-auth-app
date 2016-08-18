@@ -1,9 +1,9 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
-from schemas import Base, User, OTP
-import bcrypt
-from flask import Flask, render_template, request, redirect, g
+from schemas import Base
+from flask import Flask, g
 
 from login import login
 from signup import signup
@@ -14,6 +14,7 @@ Base.metadata.create_all(engine)
 app = Flask(__name__)
 app.register_blueprint(login)
 app.register_blueprint(signup)
+app.secret_key = os.urandom(24)
 
 @app.before_request
 def initialize_session():

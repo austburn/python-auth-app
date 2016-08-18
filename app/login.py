@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, redirect, g
+from flask import Blueprint, render_template, redirect, g, session, request
+import bcrypt
+
+from schemas import User, OTP
 
 
 login = Blueprint('login', __name__, template_folder='templates')
@@ -16,9 +19,11 @@ def login_action():
         return err_response
 
     if bcrypt.checkpw(bytes(request.form['password']), bytes(user.password)):
+        session['email'] = user.email
+        session['confirmed'] = user.confirmed
         return redirect('/success')
     return err_response
 
 @login.route('/success', methods=['GET'])
 def success():
-    return 'you successfully logged in'
+    return 'you successfully logged in as {}, this email is {}confirmed'.format(session['email'], 'not ' if not session['confirmed'] else '')

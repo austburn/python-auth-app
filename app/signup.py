@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, redirect, g
+from flask import Blueprint, render_template, redirect, g, session, request
+import bcrypt
+
+from schemas import User, OTP
 
 
 signup = Blueprint('signup', __name__, template_folder='templates')
@@ -17,9 +20,21 @@ def make_account():
     except IntegrityError:
         return render_template('signup.html', errors=['Looks like that email is taken.'])
 
+    session['email'] = request.form['email']
     g.session.add(OTP(new_user.id))
     g.session.commit()
     return redirect('/')
+
+@signup.route('/confirm')
+def confirm_email():
+    key = request.args.get('key')
+    user = g.session.query(User).filter(User.email==session['email']).one()
+    otp = g.session.query(OTP).filter(OTP.id==user.id).one()
+    if key == otp.key:
+        user.confirmed = True
+        g.session.commit()
+        return 'Successfully confirmed email'
+    return 'Nope'
 
 @signup.route('/users')
 def users():

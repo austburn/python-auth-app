@@ -1,3 +1,4 @@
 bcrypt
+diceware
 Flask
 SQLAlchemy
